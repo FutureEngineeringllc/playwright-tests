@@ -1,7 +1,12 @@
 import { test, expect } from '@playwright/test';
 
-test('navigation headers check appears', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
+test.describe('mainpage tests', () => {
+  
+  test.beforeEach(async({ page }) => {
+    await page.goto('https://playwright.dev/');
+  });
+
+  test('navigation headers check appears', async ({ page }) => {
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/Playwright/);
@@ -20,7 +25,6 @@ test('navigation headers check appears', async ({ page }) => {
 });
 
 test('navigation check functional', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
 
   // Click the get started link.
   await page.getByRole('link', { name: 'Get started' }).click();
@@ -32,7 +36,6 @@ test('navigation check functional', async ({ page }) => {
 });
 
 test('dark/light mode', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
   const themeToggle = page.getByRole('button', { name: 'Switch between dark and light' });
   await themeToggle.click();
   await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'light')
@@ -42,14 +45,16 @@ test('dark/light mode', async ({ page }) => {
 });
 
 test('header text check', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
   await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toBeVisible();
   await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toContainText('Playwright enables reliable web');
 });
 
 test('get started button', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
   
   await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
   await expect.soft(page.getByRole('banner')).toContainText('Get started');
 });
+
+
+});
+
