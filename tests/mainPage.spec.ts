@@ -1,4 +1,61 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+interface Elements {
+  locator: (page: Page) => Locator;
+  name: string;
+  text?: string;
+  attribute?: {
+    type: string;
+    value: string;
+  };
+}
+
+const elements: Elements[] = [
+  {
+    locator: (page) => page.getByRole('link', { name: 'Playwright logo Playwright' }),
+    name: 'Playwright logo link'
+  },
+  {
+    locator: (page) => page.getByRole('heading', { name: 'Playwright enables reliable' }),
+    name: 'wtf'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'Docs' }),
+    name: 'Docs link'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'MCP', exact: true }),
+    name: 'MCP link'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'CLI', exact: true }),
+    name: 'CLI link'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'API' }),
+    name: 'API link'
+  },
+  {
+    locator: (page) => page.getByRole('button', { name: 'Node.js' }),
+    name: 'node button'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'GitHub repository' }),
+    name: 'git link'
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'Discord server' }),
+    name: 'discord link'
+  },
+  {
+    locator: (page) => page.getByRole('button', { name: 'Switch between dark and light' }),
+    name: 'dark/light button'
+  },
+  {
+    locator: (page) => page.getByRole('button', { name: 'Search (Meta+k)' }),
+    name: 'search field'
+  },
+];
 
 test.describe('mainpage tests', () => {
   
@@ -7,21 +64,17 @@ test.describe('mainpage tests', () => {
   });
 
   test('navigation headers check appears', async ({ page }) => {
+    elements.forEach(({ locator, name }) => {
+      test.step(`check appearence of ${name}`, async() => {
+        await expect
+        .soft(locator(page))
+        .toBeVisible();
+      });
+    });
+    
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
-
-  await expect.soft(page.getByRole('heading', { name: 'Playwright enables reliable' })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'Playwright logo Playwright' })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'Docs' })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'MCP', exact: true })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'CLI', exact: true })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'API' })).toBeVisible();
-  await expect.soft(page.getByRole('button', { name: 'Node.js' })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'GitHub repository' })).toBeVisible();
-  await expect.soft(page.getByRole('link', { name: 'Discord server' })).toBeVisible();
-  await expect.soft(page.getByRole('button', { name: 'Switch between dark and light' })).toBeVisible();
-  await expect.soft(page.getByRole('button', { name: 'Search (Meta+k)' })).toBeVisible();
+  
+  
 });
 
 test('navigation check functional', async ({ page }) => {
