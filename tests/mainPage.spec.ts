@@ -57,6 +57,11 @@ const elements: Elements[] = [
   },
 ];
 
+
+const lightModes = ['light', 'dark'];
+
+
+
 test.describe('mainpage tests', () => {
   
   test.beforeEach(async({ page }) => {
@@ -107,6 +112,16 @@ test('get started button', async ({ page }) => {
   await expect.soft(page.getByRole('link', { name: 'Get started' })).toBeVisible();
   await expect.soft(page.getByRole('banner')).toContainText('Get started');
 });
+
+lightModes.forEach((value) => {
+  test(`check styles of active ${value} view`, async({ page }) => {
+    await page.evaluate((value) => {
+      document.querySelector('html')?.setAttribute('data-theme', value)
+    }, value);
+    await expect(page).toHaveScreenshot(`pageWith${value}Mode.png`);
+});
+});
+
 
 
 });
